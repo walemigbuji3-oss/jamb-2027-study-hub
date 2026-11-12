@@ -26,7 +26,7 @@
 <section id="subjects" class="hide"><button class="back" onclick="showHome()">← Dashboard</button><h1>My subjects</h1><p class="muted">Choose a subject to view its JAMB/UTME topic sequence.</p><div class="subject-grid" id="allSubjects"></div></section>
 <section id="course" class="hide"><button class="back" onclick="showSubjects()">← All subjects</button><div class="panel"><div id="courseIcon" style="font-size:30px"></div><h1 id="courseTitle"></h1><p class="muted" id="courseSource"></p><div class="progress"><i id="courseBar"></i></div><small class="muted" id="courseProgress"></small></div><div class="toolbar"><input id="filter" placeholder="Search chapters..." oninput="renderChapters()"><button onclick="clearSubjectProgress()" style="background:#e8eef5;color:#34516c">Reset this subject</button></div><div id="chapters"></div></section>
 <section id="chapter" class="hide"><button class="back" onclick="backToCourse()">← Back to chapters</button><div class="panel"><div class="eyebrow">CHAPTER STUDY CHECKLIST</div><h1 id="chapterTitle"></h1><p class="muted" id="chapterHint"></p><div class="lesson-actions"><button id="testBtn" onclick="startTopicTest()">Take pre-lesson challenge</button><button onclick="backToCourse()" style="background:#e8eef5;color:#34516c">Back to topic list</button></div><div id="topicTest" class="hide"></div><div id="lessonContent" class="lesson"></div><button id="completeBtn" onclick="completeCurrent()" style="background:#e8eef5;color:#34516c">Mark chapter complete</button></div><div class="notice">Take the challenge first if you already understand the topic. A score of 70% or higher marks it as mastered. If you do not pass, use the lesson notes to learn the topic, then try again.</div></section>
-<div class="panel" style="margin-top:18px"><div class="eyebrow">CONTENT SOURCES & COVERAGE</div><h3>Study materials used</h3><p class="muted">Lesson topics are organised against the JAMB/UTME subject areas and informed by the Exam Focus Chemistry, Physics and English Language PDFs you supplied. Mathematics was not supplied as a UTME textbook: it follows the JAMB Mathematics syllabus, while your Mathematics Remix PDF is used as a practice-question reference. The previously uploaded Exam Focus Mathematics edition is a JSCE text, so it is not treated as the UTME authority.</p><p class="muted"><b>Mathematics syllabus reference:</b> <a href="https://www.jamb.gov.ng/" target="_blank" rel="noopener">JAMB official website</a> (check the IBASS syllabus for the current UTME version). A convenient reference copy is <a href="https://jamb-gov.org/wp-content/uploads/2024/01/Mathematics-Syllabus.pdf" target="_blank" rel="noopener">JAMB Mathematics syllabus PDF</a>; this copy is hosted by a third party, not JAMB.</p><p class="muted"><b>Mathematics coverage:</b> Number and Numeration; Algebra; Geometry and Trigonometry; Calculus; Statistics. The topic list and notes below are organised under these areas.</p><p class="muted"><b>Important:</b> Mathematics now has self-contained notes for the listed topic outline, alongside the existing selected notes in the other subjects. The whole site is still being populated and checked: some Chemistry, Physics and English topics need fuller notes, and the starter question bank is not yet a complete verified test set for every topic. Topic tests are not generated for a chapter unless matching questions are available. Live AI tutoring and automatic generation require a secure server connection.</p></div></main><footer>JAMB 2027 Study Hub · Study Hub for JAMB/UTME preparation. Subject outlines are study guides and should be checked against the official JAMB syllabus. Progress is stored locally in this browser.</footer>
+<div class="panel" style="margin-top:18px"><div class="eyebrow">CONTENT SOURCES & COVERAGE</div><h3>Study materials used</h3><p class="muted">Lesson topics are organised against the JAMB/UTME subject areas and informed by the Exam Focus Chemistry, Physics and English Language PDFs you supplied. Mathematics was not supplied as a UTME textbook: it follows the JAMB Mathematics syllabus, while your Mathematics Remix PDF is used as a practice-question reference. The previously uploaded Exam Focus Mathematics edition is a JSCE text, so it is not treated as the UTME authority.</p><p class="muted"><b>Mathematics syllabus reference:</b> <a href="https://www.jamb.gov.ng/" target="_blank" rel="noopener">JAMB official website</a> (check the IBASS syllabus for the current UTME version). A convenient reference copy is <a href="https://jamb-gov.org/wp-content/uploads/2024/01/Mathematics-Syllabus.pdf" target="_blank" rel="noopener">JAMB Mathematics syllabus PDF</a>; this copy is hosted by a third party, not JAMB.</p><p class="muted"><b>Mathematics coverage:</b> Number and Numeration; Algebra; Geometry and Trigonometry; Calculus; Statistics. The topic list and notes below are organised under these areas.</p><p class="muted"><b>Important:</b> Mathematics now includes self-contained notes across all 23 listed topics, organised under the five JAMB syllabus areas: Number and Numeration, Algebra, Geometry and Trigonometry, Calculus, and Statistics. The whole site is still being populated and checked: some Chemistry, Physics and English topics need fuller notes, and the starter question bank is not yet a complete verified test set for every topic. Topic tests are not generated for a chapter unless matching questions are available. Live AI tutoring and automatic generation require a secure server connection.</p></div></main><footer>JAMB 2027 Study Hub · Study Hub for JAMB/UTME preparation. Subject outlines are study guides and should be checked against the official JAMB syllabus. Progress is stored locally in this browser.</footer>
 <script>
 const subjects=[
 {id:"chem",name:"Chemistry",icon:"⚗️",source:"Exam Focus Chemistry · JAMB topic guide",chapters:["Particulate Nature of Matter","Chemical Combination","Chemical Equations and Reactions","Separation Techniques","Gas Laws and Kinetic Theory of Matter","Acids, Bases and Salts","Carbon and Its Compounds","Mass-Volume Relationships","Solubility and Solubility Curves","Rates of Chemical Reactions and Energy Changes","Chemical Equilibrium","Electrolysis and Redox Processes","Air, Water, Hardness and Pollution","Hydrogen and Oxygen","Nitrogen and Its Compounds","Sulphur and Its Compounds","Halogens","Metals and Their Compounds","Non-metals and Their Compounds","Hydrocarbons and Petroleum","Alkanols","Alkanoic Acids and Alkanoates","Giant Molecules","Industrial Chemistry","Volumetric Analysis","Qualitative Analysis"]},
@@ -39,190 +39,8 @@ function totals(){let total=subjects.reduce((n,s)=>n+s.chapters.length,0),done=s
 function subjectCard(s){let d=s.chapters.filter((_,i)=>isDone(s.id,i)).length;return `<button class="subject" onclick="openSubject('${s.id}')"><span class="ico">${s.icon}</span><b>${s.name}</b><small>${s.chapters.length} chapters · ${d} completed</small></button>`}
 function paintCards(){document.getElementById("homeSubjects").innerHTML=subjects.map(subjectCard).join("");document.getElementById("allSubjects").innerHTML=subjects.map(subjectCard).join("");totals()}
 function hideAll(){["home","subjects","course","chapter"].forEach(x=>document.getElementById(x).classList.add("hide"))}
-function showHome(){hideAll();document.getElementById("home").classList.remove("hide");
-const vocabWords=[
-{w:"Abate",m:"to become less intense or severe",s:"diminish",a:"intensify",ex:"The heavy rain began to abate after midday."},
-{w:"Adept",m:"highly skilled or proficient",s:"expert",a:"incompetent",ex:"She is adept at solving difficult algebra questions."},
-{w:"Ambiguous",m:"having more than one possible meaning",s:"unclear",a:"unambiguous",ex:"The instruction was ambiguous, so candidates asked for clarification."},
-{w:"Benevolent",m:"kind and generous",s:"charitable",a:"malevolent",ex:"The benevolent donor supported the school library."},
-{w:"Candid",m:"honest and direct",s:"frank",a:"evasive",ex:"The principal gave a candid explanation."},
-{w:"Coherent",m:"logical and well organised",s:"consistent",a:"illogical",ex:"A good essay presents a coherent argument."},
-{w:"Concur",m:"to agree",s:"agree",a:"disagree",ex:"I concur with the examiner's interpretation."},
-{w:"Diligent",m:"showing careful and steady effort",s:"industrious",a:"lazy",ex:"A diligent student revises regularly."},
-{w:"Eloquent",m:"fluent and persuasive in speaking or writing",s:"articulate",a:"inarticulate",ex:"The speaker delivered an eloquent address."},
-{w:"Frugal",m:"careful about spending money or resources",s:"thrifty",a:"wasteful",ex:"The frugal family planned its expenses."},
-{w:"Impartial",m:"fair and not favouring either side",s:"unbiased",a:"prejudiced",ex:"A judge must remain impartial."},
-{w:"Meticulous",m:"very careful and attentive to detail",s:"thorough",a:"careless",ex:"The researcher kept meticulous records."},
-{w:"Obsolete",m:"no longer used because something newer exists",s:"outdated",a:"modern",ex:"The obsolete machine was replaced."},
-{w:"Prudent",m:"showing good judgement and care",s:"wise",a:"reckless",ex:"It is prudent to check your answers."},
-{w:"Reluctant",m:"unwilling or hesitant",s:"hesitant",a:"eager",ex:"He was reluctant to guess without evidence."},
-{w:"Resilient",m:"able to recover quickly from difficulty",s:"tough",a:"fragile",ex:"The resilient team continued after the setback."},
-{w:"Scrutinise",m:"to examine very carefully",s:"inspect",a:"overlook",ex:"Scrutinise each option before choosing."},
-{w:"Subsequent",m:"coming after something else",s:"following",a:"preceding",ex:"The subsequent chapter explains the experiment."},
-{w:"Tedious",m:"long, slow and tiring",s:"wearisome",a:"enjoyable",ex:"The tedious calculation required patience."},
-{w:"Vindicate",m:"to show that someone or something is right",s:"justify",a:"condemn",ex:"The new evidence helped vindicate her claim."},
-
-{w:"Adversity",m:"a difficult or unpleasant situation",s:"hardship",a:"prosperity",ex:"She remained focused despite adversity."},
-{w:"Alleviate",m:"to make pain or a problem less severe",s:"relieve",a:"worsen",ex:"The new measures may alleviate the shortage."},
-{w:"Apprehensive",m:"anxious or worried about something",s:"uneasy",a:"confident",ex:"Candidates felt apprehensive before the examination."},
-{w:"Arbitrary",m:"based on personal choice rather than a clear reason",s:"random",a:"reasoned",ex:"The decision appeared arbitrary."},
-{w:"Astute",m:"quick to understand and judge situations accurately",s:"shrewd",a:"foolish",ex:"The astute student noticed the hidden clue."},
-{w:"Audacious",m:"bold and willing to take risks",s:"daring",a:"timid",ex:"It was an audacious proposal."},
-{w:"Belligerent",m:"hostile and aggressive",s:"combative",a:"peaceful",ex:"His belligerent tone worsened the disagreement."},
-{w:"Brevity",m:"the quality of being brief",s:"conciseness",a:"lengthiness",ex:"Brevity is useful in summary writing."},
-{w:"Catalyst",m:"something that causes or speeds up change",s:"stimulus",a:"hindrance",ex:"The discovery became a catalyst for reform."},
-{w:"Compel",m:"to force or strongly persuade",s:"oblige",a:"dissuade",ex:"The evidence may compel a review."},
-{w:"Conspicuous",m:"easy to see or notice",s:"noticeable",a:"hidden",ex:"The error was conspicuous in the final paragraph."},
-{w:"Credible",m:"believable or trustworthy",s:"convincing",a:"implausible",ex:"The witness gave a credible account."},
-{w:"Daunt",m:"to make someone feel intimidated or discouraged",s:"discourage",a:"encourage",ex:"A difficult question should not daunt a prepared candidate."},
-{w:"Debilitate",m:"to make weak",s:"weaken",a:"strengthen",ex:"The prolonged illness can debilitate a person."},
-{w:"Deference",m:"respectful submission to another's judgement",s:"respect",a:"disrespect",ex:"The child spoke with deference to the elder."},
-{w:"Discrepancy",m:"a difference between things that should agree",s:"inconsistency",a:"agreement",ex:"There was a discrepancy between the two records."},
-{w:"Egregious",m:"remarkably bad or unacceptable",s:"outrageous",a:"commendable",ex:"The report exposed an egregious error."},
-{w:"Elated",m:"extremely happy",s:"overjoyed",a:"miserable",ex:"The team was elated by the result."},
-{w:"Exacerbate",m:"to make a problem worse",s:"aggravate",a:"ease",ex:"Lack of sleep may exacerbate stress."},
-{w:"Exemplary",m:"serving as an excellent model",s:"commendable",a:"inferior",ex:"Her exemplary conduct was praised."},
-{w:"Explicit",m:"clearly and directly stated",s:"specific",a:"implicit",ex:"The instruction was explicit."},
-{w:"Feasible",m:"possible and practical to do",s:"viable",a:"impracticable",ex:"The plan is feasible within a week."},
-{w:"Futile",m:"producing no useful result",s:"pointless",a:"effective",ex:"Further argument proved futile."},
-{w:"Hostile",m:"unfriendly or opposed",s:"antagonistic",a:"friendly",ex:"The crowd became hostile."},
-{w:"Imminent",m:"likely to happen very soon",s:"approaching",a:"distant",ex:"The imminent storm forced a change of plan."},
-{w:"Incessant",m:"continuing without interruption",s:"constant",a:"occasional",ex:"The incessant noise disturbed the class."},
-{w:"Inevitable",m:"certain to happen",s:"unavoidable",a:"preventable",ex:"Some change is inevitable."},
-{w:"Lucid",m:"clear and easy to understand",s:"intelligible",a:"confusing",ex:"The teacher gave a lucid explanation."},
-{w:"Mitigate",m:"to make something less harmful or serious",s:"moderate",a:"intensify",ex:"The steps helped mitigate the effects."},
-{w:"Novice",m:"a person new to an activity",s:"beginner",a:"expert",ex:"A novice may need more practice."},
-{w:"Omit",m:"to leave out",s:"exclude",a:"include",ex:"Do not omit the units in your answer."},
-{w:"Plausible",m:"seeming reasonable or likely to be true",s:"credible",a:"unlikely",ex:"The explanation sounded plausible."},
-{w:"Precarious",m:"uncertain or unsafe",s:"unstable",a:"secure",ex:"The ladder was in a precarious position."},
-{w:"Profound",m:"very great or deep",s:"intense",a:"superficial",ex:"The speech had a profound effect."},
-{w:"Prohibit",m:"to officially forbid",s:"ban",a:"permit",ex:"The rules prohibit the use of calculators in this section."},
-{w:"Relinquish",m:"to give up or surrender",s:"yield",a:"retain",ex:"He refused to relinquish his claim."},
-{w:"Scrupulous",m:"careful to do what is right",s:"conscientious",a:"dishonest",ex:"A scrupulous researcher checks every source."},
-{w:"Sporadic",m:"occurring irregularly",s:"occasional",a:"constant",ex:"There were sporadic power interruptions."},
-{w:"Stern",m:"strict or severe in manner",s:"harsh",a:"gentle",ex:"The principal gave a stern warning."},
-{w:"Superfluous",m:"more than is needed",s:"unnecessary",a:"essential",ex:"Remove superfluous words from the summary."},
-{w:"Tenacious",m:"holding firmly to a belief or goal",s:"persistent",a:"yielding",ex:"Her tenacious effort improved her results."},
-{w:"Transient",m:"lasting only a short time",s:"temporary",a:"permanent",ex:"The discomfort was transient."},
-{w:"Trivial",m:"of little importance",s:"insignificant",a:"significant",ex:"Do not spend too long on trivial details."},
-{w:"Ubiquitous",m:"present or found everywhere",s:"widespread",a:"rare",ex:"Mobile phones are ubiquitous in many communities."},
-{w:"Undermine",m:"to weaken gradually",s:"erode",a:"strengthen",ex:"Careless work can undermine a good argument."},
-{w:"Vigilant",m:"watchful and alert",s:"attentive",a:"careless",ex:"Remain vigilant when checking your answers."},
-{w:"Zealous",m:"showing great enthusiasm",s:"fervent",a:"apathetic",ex:"The zealous volunteer worked hard."}
-];
-let vocabIndex=-1;
-function nextWord(){vocabIndex=(vocabIndex+1)%vocabWords.length;const x=vocabWords[vocabIndex];document.getElementById('wordOfDay').innerHTML=`<b>${x.w}</b><p><b>Meaning:</b> ${x.m}</p><p><b>Synonym:</b> ${x.s} · <b>Antonym:</b> ${x.a}</p><p><b>Example:</b> ${x.ex}</p><small>Word ${vocabIndex+1} of ${vocabWords.length}</small>`;document.getElementById('vocabResult').textContent='';}
-function vocabQuiz(){const x=vocabWords[Math.floor(Math.random()*vocabWords.length)];const distractors=shuffle(vocabWords.filter(v=>v.w!==x.w)).slice(0,3).map(v=>v.m);const opts=shuffle([x.m,...distractors]);const box=document.getElementById('vocabResult');box.innerHTML=`<div class="testbox"><b>Choose the meaning of “${x.w}”.</b>${opts.map((o,i)=>`<button class="option" onclick="checkVocab(${JSON.stringify(x.w)},${i},${JSON.stringify(opts)})">${'ABCD'[i]}. ${o}</button>`).join('')}<div id="vocabFeedback"></div></div>`;window._vocabCurrent=x;}
-function checkVocab(word,index,opts){const x=window._vocabCurrent;if(!x)return;const ok=opts[index]===x.m;document.getElementById('vocabFeedback').innerHTML=`<div class="result"><b>${ok?'Correct!':'Not quite.'}</b><p>${x.w} means ${x.m}. A useful synonym is ${x.s}; its antonym is ${x.a}.</p><p><i>${x.ex}</i></p></div>`;}
-
-
-function searchVocabulary(){
- const field=document.getElementById('vocabSearch');
- const target=document.getElementById('vocabSearchResults');
- if(!field||!target)return;
- const term=field.value.trim().toLocaleLowerCase();
- target.replaceChildren();
- if(!term){target.textContent='Type a word or part of its meaning to search the vocabulary list.';target.className='muted';return;}
- const matches=vocabWords.filter(x=>[x.w,x.m,x.s,x.a,x.ex].some(v=>String(v).toLocaleLowerCase().includes(term)));
- if(!matches.length){target.textContent='No matching word found. Try another spelling or search by meaning, synonym or antonym.';target.className='notice';return;}
- target.className='';
- const heading=document.createElement('p');heading.className='muted';heading.textContent=`${matches.length} matching ${matches.length===1?'word':'words'}`;target.appendChild(heading);
- matches.forEach(x=>{
-  const card=document.createElement('div');card.className='testbox';
-  const word=document.createElement('b');word.textContent=x.w;card.appendChild(word);
-  const meaning=document.createElement('p');meaning.innerHTML='<b>Meaning:</b> ';meaning.appendChild(document.createTextNode(x.m));card.appendChild(meaning);
-  const syn=document.createElement('p');syn.innerHTML='<b>Synonym:</b> ';syn.appendChild(document.createTextNode(x.s+'  ·  '));const ant=document.createElement('b');ant.textContent='Antonym: ';syn.appendChild(ant);syn.appendChild(document.createTextNode(x.a));card.appendChild(syn);
-  const example=document.createElement('p');example.innerHTML='<b>Example:</b> ';example.appendChild(document.createTextNode(x.ex));card.appendChild(example);
-  const show=document.createElement('button');show.className='smallbtn';show.textContent='Study this word';show.addEventListener('click',()=>{const i=vocabWords.findIndex(v=>v.w===x.w);vocabIndex=i;const box=document.getElementById('wordOfDay');box.textContent='';const b=document.createElement('b');b.textContent=x.w;box.appendChild(b);[['Meaning: ',x.m],['Synonym: ',x.s+' · Antonym: '+x.a],['Example: ',x.ex]].forEach(([label,value])=>{const p=document.createElement('p');const strong=document.createElement('b');strong.textContent=label;p.appendChild(strong);p.appendChild(document.createTextNode(value));box.appendChild(p);});const small=document.createElement('small');small.textContent=`Word ${i+1} of ${vocabWords.length}`;box.appendChild(small);});card.appendChild(show);
-  target.appendChild(card);
- });
-}
-function clearVocabularySearch(){const f=document.getElementById('vocabSearch');if(f)f.value='';const r=document.getElementById('vocabSearchResults');if(r){r.replaceChildren();r.textContent='Search by word, meaning, synonym or antonym.';r.className='muted';}if(f)f.focus();}
-
-async function askAITutor(){const q=document.getElementById('aiQuestion').value.trim(),subject=document.getElementById('aiSubject').value,status=document.getElementById('aiStatus'),reply=document.getElementById('aiReply');if(!q){status.textContent='Type a question first.';return;}status.textContent='AI is thinking…';reply.classList.remove('hide');reply.textContent='Please wait…';try{const r=await fetch('/api/tutor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject,question:q})});const data=await r.json();if(!r.ok)throw new Error(data.error||'AI service is not available.');reply.textContent=data.answer||'No answer returned.';status.textContent='Answer received.';}catch(e){reply.textContent='The AI tutor is not connected yet. Deploy the included server, set OPENAI_API_KEY on the server, and open this website through that server. Your question has not been sent anywhere.';status.textContent='Server connection required.';}}
-
-if(document.getElementById("wordOfDay")) nextWord();
-paintCards();window.scrollTo(0,0)}
-function showSubjects(){hideAll();document.getElementById("subjects").classList.remove("hide");
-const vocabWords=[
-{w:"Abate",m:"to become less intense or severe",s:"diminish",a:"intensify",ex:"The heavy rain began to abate after midday."},
-{w:"Adept",m:"highly skilled or proficient",s:"expert",a:"incompetent",ex:"She is adept at solving difficult algebra questions."},
-{w:"Ambiguous",m:"having more than one possible meaning",s:"unclear",a:"unambiguous",ex:"The instruction was ambiguous, so candidates asked for clarification."},
-{w:"Benevolent",m:"kind and generous",s:"charitable",a:"malevolent",ex:"The benevolent donor supported the school library."},
-{w:"Candid",m:"honest and direct",s:"frank",a:"evasive",ex:"The principal gave a candid explanation."},
-{w:"Coherent",m:"logical and well organised",s:"consistent",a:"illogical",ex:"A good essay presents a coherent argument."},
-{w:"Concur",m:"to agree",s:"agree",a:"disagree",ex:"I concur with the examiner's interpretation."},
-{w:"Diligent",m:"showing careful and steady effort",s:"industrious",a:"lazy",ex:"A diligent student revises regularly."},
-{w:"Eloquent",m:"fluent and persuasive in speaking or writing",s:"articulate",a:"inarticulate",ex:"The speaker delivered an eloquent address."},
-{w:"Frugal",m:"careful about spending money or resources",s:"thrifty",a:"wasteful",ex:"The frugal family planned its expenses."},
-{w:"Impartial",m:"fair and not favouring either side",s:"unbiased",a:"prejudiced",ex:"A judge must remain impartial."},
-{w:"Meticulous",m:"very careful and attentive to detail",s:"thorough",a:"careless",ex:"The researcher kept meticulous records."},
-{w:"Obsolete",m:"no longer used because something newer exists",s:"outdated",a:"modern",ex:"The obsolete machine was replaced."},
-{w:"Prudent",m:"showing good judgement and care",s:"wise",a:"reckless",ex:"It is prudent to check your answers."},
-{w:"Reluctant",m:"unwilling or hesitant",s:"hesitant",a:"eager",ex:"He was reluctant to guess without evidence."},
-{w:"Resilient",m:"able to recover quickly from difficulty",s:"tough",a:"fragile",ex:"The resilient team continued after the setback."},
-{w:"Scrutinise",m:"to examine very carefully",s:"inspect",a:"overlook",ex:"Scrutinise each option before choosing."},
-{w:"Subsequent",m:"coming after something else",s:"following",a:"preceding",ex:"The subsequent chapter explains the experiment."},
-{w:"Tedious",m:"long, slow and tiring",s:"wearisome",a:"enjoyable",ex:"The tedious calculation required patience."},
-{w:"Vindicate",m:"to show that someone or something is right",s:"justify",a:"condemn",ex:"The new evidence helped vindicate her claim."},
-
-{w:"Adversity",m:"a difficult or unpleasant situation",s:"hardship",a:"prosperity",ex:"She remained focused despite adversity."},
-{w:"Alleviate",m:"to make pain or a problem less severe",s:"relieve",a:"worsen",ex:"The new measures may alleviate the shortage."},
-{w:"Apprehensive",m:"anxious or worried about something",s:"uneasy",a:"confident",ex:"Candidates felt apprehensive before the examination."},
-{w:"Arbitrary",m:"based on personal choice rather than a clear reason",s:"random",a:"reasoned",ex:"The decision appeared arbitrary."},
-{w:"Astute",m:"quick to understand and judge situations accurately",s:"shrewd",a:"foolish",ex:"The astute student noticed the hidden clue."},
-{w:"Audacious",m:"bold and willing to take risks",s:"daring",a:"timid",ex:"It was an audacious proposal."},
-{w:"Belligerent",m:"hostile and aggressive",s:"combative",a:"peaceful",ex:"His belligerent tone worsened the disagreement."},
-{w:"Brevity",m:"the quality of being brief",s:"conciseness",a:"lengthiness",ex:"Brevity is useful in summary writing."},
-{w:"Catalyst",m:"something that causes or speeds up change",s:"stimulus",a:"hindrance",ex:"The discovery became a catalyst for reform."},
-{w:"Compel",m:"to force or strongly persuade",s:"oblige",a:"dissuade",ex:"The evidence may compel a review."},
-{w:"Conspicuous",m:"easy to see or notice",s:"noticeable",a:"hidden",ex:"The error was conspicuous in the final paragraph."},
-{w:"Credible",m:"believable or trustworthy",s:"convincing",a:"implausible",ex:"The witness gave a credible account."},
-{w:"Daunt",m:"to make someone feel intimidated or discouraged",s:"discourage",a:"encourage",ex:"A difficult question should not daunt a prepared candidate."},
-{w:"Debilitate",m:"to make weak",s:"weaken",a:"strengthen",ex:"The prolonged illness can debilitate a person."},
-{w:"Deference",m:"respectful submission to another's judgement",s:"respect",a:"disrespect",ex:"The child spoke with deference to the elder."},
-{w:"Discrepancy",m:"a difference between things that should agree",s:"inconsistency",a:"agreement",ex:"There was a discrepancy between the two records."},
-{w:"Egregious",m:"remarkably bad or unacceptable",s:"outrageous",a:"commendable",ex:"The report exposed an egregious error."},
-{w:"Elated",m:"extremely happy",s:"overjoyed",a:"miserable",ex:"The team was elated by the result."},
-{w:"Exacerbate",m:"to make a problem worse",s:"aggravate",a:"ease",ex:"Lack of sleep may exacerbate stress."},
-{w:"Exemplary",m:"serving as an excellent model",s:"commendable",a:"inferior",ex:"Her exemplary conduct was praised."},
-{w:"Explicit",m:"clearly and directly stated",s:"specific",a:"implicit",ex:"The instruction was explicit."},
-{w:"Feasible",m:"possible and practical to do",s:"viable",a:"impracticable",ex:"The plan is feasible within a week."},
-{w:"Futile",m:"producing no useful result",s:"pointless",a:"effective",ex:"Further argument proved futile."},
-{w:"Hostile",m:"unfriendly or opposed",s:"antagonistic",a:"friendly",ex:"The crowd became hostile."},
-{w:"Imminent",m:"likely to happen very soon",s:"approaching",a:"distant",ex:"The imminent storm forced a change of plan."},
-{w:"Incessant",m:"continuing without interruption",s:"constant",a:"occasional",ex:"The incessant noise disturbed the class."},
-{w:"Inevitable",m:"certain to happen",s:"unavoidable",a:"preventable",ex:"Some change is inevitable."},
-{w:"Lucid",m:"clear and easy to understand",s:"intelligible",a:"confusing",ex:"The teacher gave a lucid explanation."},
-{w:"Mitigate",m:"to make something less harmful or serious",s:"moderate",a:"intensify",ex:"The steps helped mitigate the effects."},
-{w:"Novice",m:"a person new to an activity",s:"beginner",a:"expert",ex:"A novice may need more practice."},
-{w:"Omit",m:"to leave out",s:"exclude",a:"include",ex:"Do not omit the units in your answer."},
-{w:"Plausible",m:"seeming reasonable or likely to be true",s:"credible",a:"unlikely",ex:"The explanation sounded plausible."},
-{w:"Precarious",m:"uncertain or unsafe",s:"unstable",a:"secure",ex:"The ladder was in a precarious position."},
-{w:"Profound",m:"very great or deep",s:"intense",a:"superficial",ex:"The speech had a profound effect."},
-{w:"Prohibit",m:"to officially forbid",s:"ban",a:"permit",ex:"The rules prohibit the use of calculators in this section."},
-{w:"Relinquish",m:"to give up or surrender",s:"yield",a:"retain",ex:"He refused to relinquish his claim."},
-{w:"Scrupulous",m:"careful to do what is right",s:"conscientious",a:"dishonest",ex:"A scrupulous researcher checks every source."},
-{w:"Sporadic",m:"occurring irregularly",s:"occasional",a:"constant",ex:"There were sporadic power interruptions."},
-{w:"Stern",m:"strict or severe in manner",s:"harsh",a:"gentle",ex:"The principal gave a stern warning."},
-{w:"Superfluous",m:"more than is needed",s:"unnecessary",a:"essential",ex:"Remove superfluous words from the summary."},
-{w:"Tenacious",m:"holding firmly to a belief or goal",s:"persistent",a:"yielding",ex:"Her tenacious effort improved her results."},
-{w:"Transient",m:"lasting only a short time",s:"temporary",a:"permanent",ex:"The discomfort was transient."},
-{w:"Trivial",m:"of little importance",s:"insignificant",a:"significant",ex:"Do not spend too long on trivial details."},
-{w:"Ubiquitous",m:"present or found everywhere",s:"widespread",a:"rare",ex:"Mobile phones are ubiquitous in many communities."},
-{w:"Undermine",m:"to weaken gradually",s:"erode",a:"strengthen",ex:"Careless work can undermine a good argument."},
-{w:"Vigilant",m:"watchful and alert",s:"attentive",a:"careless",ex:"Remain vigilant when checking your answers."},
-{w:"Zealous",m:"showing great enthusiasm",s:"fervent",a:"apathetic",ex:"The zealous volunteer worked hard."}
-];
-let vocabIndex=-1;
-function nextWord(){vocabIndex=(vocabIndex+1)%vocabWords.length;const x=vocabWords[vocabIndex];document.getElementById('wordOfDay').innerHTML=`<b>${x.w}</b><p><b>Meaning:</b> ${x.m}</p><p><b>Synonym:</b> ${x.s} · <b>Antonym:</b> ${x.a}</p><p><b>Example:</b> ${x.ex}</p><small>Word ${vocabIndex+1} of ${vocabWords.length}</small>`;document.getElementById('vocabResult').textContent='';}
-function vocabQuiz(){const x=vocabWords[Math.floor(Math.random()*vocabWords.length)];const distractors=shuffle(vocabWords.filter(v=>v.w!==x.w)).slice(0,3).map(v=>v.m);const opts=shuffle([x.m,...distractors]);const box=document.getElementById('vocabResult');box.innerHTML=`<div class="testbox"><b>Choose the meaning of “${x.w}”.</b>${opts.map((o,i)=>`<button class="option" onclick="checkVocab(${JSON.stringify(x.w)},${i},${JSON.stringify(opts)})">${'ABCD'[i]}. ${o}</button>`).join('')}<div id="vocabFeedback"></div></div>`;window._vocabCurrent=x;}
-function checkVocab(word,index,opts){const x=window._vocabCurrent;if(!x)return;const ok=opts[index]===x.m;document.getElementById('vocabFeedback').innerHTML=`<div class="result"><b>${ok?'Correct!':'Not quite.'}</b><p>${x.w} means ${x.m}. A useful synonym is ${x.s}; its antonym is ${x.a}.</p><p><i>${x.ex}</i></p></div>`;}
-
-async function askAITutor(){const q=document.getElementById('aiQuestion').value.trim(),subject=document.getElementById('aiSubject').value,status=document.getElementById('aiStatus'),reply=document.getElementById('aiReply');if(!q){status.textContent='Type a question first.';return;}status.textContent='AI is thinking…';reply.classList.remove('hide');reply.textContent='Please wait…';try{const r=await fetch('/api/tutor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject,question:q})});const data=await r.json();if(!r.ok)throw new Error(data.error||'AI service is not available.');reply.textContent=data.answer||'No answer returned.';status.textContent='Answer received.';}catch(e){reply.textContent='The AI tutor is not connected yet. Deploy the included server, set OPENAI_API_KEY on the server, and open this website through that server. Your question has not been sent anywhere.';status.textContent='Server connection required.';}}
-
-if(document.getElementById("wordOfDay")) nextWord();
-paintCards();window.scrollTo(0,0)}
+function showHome(){hideAll();document.getElementById("home").classList.remove("hide");paintCards();window.scrollTo(0,0)}
+function showSubjects(){hideAll();document.getElementById("subjects").classList.remove("hide");paintCards();window.scrollTo(0,0)}
 function openSubject(id){activeSubject=subjects.find(s=>s.id===id);document.getElementById("courseIcon").textContent=activeSubject.icon;document.getElementById("courseTitle").textContent=activeSubject.name;document.getElementById("courseSource").textContent=activeSubject.source+" · Follow the listed order.";document.getElementById("filter").value="";renderChapters();hideAll();document.getElementById("course").classList.remove("hide");window.scrollTo(0,0)}
 function renderChapters(){if(!activeSubject)return;let q=document.getElementById("filter").value.toLowerCase(),done=activeSubject.chapters.filter((_,i)=>isDone(activeSubject.id,i)).length;document.getElementById("courseBar").style.width=(done/activeSubject.chapters.length*100)+"%";document.getElementById("courseProgress").textContent=done+" of "+activeSubject.chapters.length+" chapters completed";document.getElementById("chapters").innerHTML=activeSubject.chapters.map((t,i)=>({t,i})).filter(x=>x.t.toLowerCase().includes(q)).map(({t,i})=>{let d=isDone(activeSubject.id,i);return `<div class="chapter ${d?"done":""}"><div class="num">${String(i+1).padStart(2,"0")}</div><div class="info"><b>${t}</b><small>Chapter ${i+1}</small></div><button class="smallbtn ${d?"done":""}" onclick="openChapter(${i})">${d?"✓ Completed":"Study chapter"}</button></div>`}).join("")||'<p class="muted">No matching chapter found.</p>';totals()}
 function openChapter(i){activeChapter=i;document.getElementById("chapterTitle").textContent="Chapter "+(i+1)+": "+activeSubject.chapters[i];document.getElementById("chapterHint").textContent="Start with the pre-lesson challenge if you already know the topic, or work through the lesson notes below.";document.getElementById("lessonContent").innerHTML=buildLesson(activeSubject.id,activeSubject.chapters[i]);document.getElementById("topicTest").classList.add("hide");document.getElementById("completeBtn").textContent=isDone(activeSubject.id,i)?"Completed ✓ — mark as not complete":"Mark chapter complete";hideAll();document.getElementById("chapter").classList.remove("hide");window.scrollTo(0,0)}
@@ -281,9 +99,9 @@ math:{
 "Vectors":["A vector has magnitude and direction; a scalar has magnitude only. Vectors may be represented by directed line segments or components such as (a,b).", "Add vectors by adding corresponding components. Subtract by adding the negative vector. The magnitude of (a,b) is √(a²+b²).", "A vector from A(x1,y1) to B(x2,y2) is (x2−x1, y2−y1). A unit vector has magnitude 1 and points in the required direction.", "For vectors a and b, the dot product is a·b = |a||b|cosθ; in components (a1,a2)·(b1,b2) = a1b1 + a2b2. A zero dot product means perpendicular non-zero vectors.","JAMB tip: distinguish position vectors from displacement vectors and preserve direction when subtracting."],
 "Differentiation":["Differentiation finds the derivative, which gives the gradient of a curve at a point and the instantaneous rate of change of a quantity.","For a power function, if y = ax^n, then dy/dx = anx^(n−1). Differentiate each term separately; the derivative of a constant is zero.","The gradient at x = a is found by substituting a into dy/dx. A stationary point occurs where dy/dx = 0.","For motion, if displacement s is a function of time t, velocity v = ds/dt and acceleration a = dv/dt = d²s/dt².","Worked example: y = 3x² − 4x + 7 gives dy/dx = 6x − 4; at x = 2, the gradient is 8.","JAMB tip: reduce the power by one and multiply by the original power; do not differentiate a constant as if it were a variable."],
 "Integration":["Integration is the reverse process of differentiation and is used to find antiderivatives and areas under curves.","For n ≠ −1, ∫ax^n dx = ax^(n+1)/(n+1) + C. Integrate each term separately; C is the constant of integration.","A definite integral from a to b is evaluated by finding an antiderivative F(x), then calculating F(b) − F(a). It represents signed area between the curve and x-axis over the interval.","If dy/dx is known, integration can recover y; use a given point or condition to determine C.","Worked example: ∫(6x + 2) dx = 3x² + 2x + C. Differentiate the result to check it.","JAMB tip: include + C for indefinite integrals, but do not add it to a correctly evaluated definite integral."],
+"Statistics and Data Presentation":["Statistics is the collection, organisation, analysis and interpretation of numerical information. A population is the complete group under study; a sample is a selected part of that population.","Data may be qualitative (categories) or quantitative (numbers). Quantitative data may be discrete (counted) or continuous (measured).","A frequency table records how often each value or class occurs. A bar chart is suitable for separate categories; a histogram represents grouped continuous data with adjoining bars; a pie chart shows proportions of a whole.","For a pie chart, sector angle = (category frequency ÷ total frequency) × 360°. The total of all sector angles is 360°.","When interpreting tables and graphs, read the title, axes, scale, units and key. Avoid confusing frequency with cumulative frequency or percentage.","Worked example: If 15 out of 60 students prefer Chemistry, the percentage is (15/60) × 100 = 25%. The pie-chart angle is (15/60) × 360° = 90°.","JAMB tip: Check whether a graph begins at zero and whether intervals are equal before comparing values."],
+"Probability":["Probability measures the chance that an event occurs. For equally likely outcomes, P(A) = number of outcomes favourable to A ÷ total number of possible outcomes.","Probability lies between 0 and 1 inclusive. An impossible event has probability 0; a certain event has probability 1.","The complement of A is the event that A does not occur: P(A') = 1 − P(A). The probabilities of all mutually exclusive outcomes in a complete sample space add up to 1.","For mutually exclusive events, P(A or B) = P(A) + P(B). In general, P(A∪B) = P(A) + P(B) − P(A∩B).","For independent events, P(A and B) = P(A) × P(B). For dependent events, use the relevant conditional probability rather than assuming independence.","Worked example: A fair die is thrown once. The probability of obtaining an even number is 3/6 = 1/2 because the favourable outcomes are 2, 4 and 6.","JAMB tip: Identify whether the question says ‘and’, ‘or’, ‘at least’, ‘exactly’ or ‘not’. These phrases determine the event you must calculate."],
 "Measures of Central Tendency and Dispersion":["The mean is the arithmetic average; the median is the middle ordered value; the mode is the most frequent value. Each describes the centre of a data set differently.","For a frequency table, mean = Σfx/Σf, where x is the value or class midpoint and f is its frequency. For grouped data, the result is an estimate using class midpoints.","Range = maximum − minimum. Variance measures average squared deviation from the mean; standard deviation is the square root of variance.","Extreme values affect the mean more than the median. The median is often more representative for skewed data or data containing outliers.","JAMB tip: arrange raw data before locating the median, and remember that the median position depends on whether the number of observations is odd or even."],
-"Statistics and Data Presentation":["Statistics is the collection, organisation, presentation, analysis and interpretation of data. Data may be discrete (countable) or continuous (measured).", "A frequency table records how often each value or class occurs. Data may be displayed with bar charts, pie charts, histograms, frequency polygons and cumulative frequency curves.", "A bar chart has separated bars for categories; a histogram has adjoining bars for continuous class intervals. When class widths differ, use frequency density = frequency ÷ class width for histogram heights.", "For a pie chart, sector angle = (frequency ÷ total frequency) × 360°. For grouped data, use class midpoints when estimating the mean.", "JAMB tip: read chart scales and class boundaries carefully, and distinguish a histogram from a bar chart."],
-"Probability":["Probability measures the likelihood of an event. For equally likely outcomes, P(A) = number of favourable outcomes ÷ total number of possible outcomes. Its value lies between 0 and 1.", "The probability of an impossible event is 0 and that of a certain event is 1. For a complementary event, P(not A) = 1 − P(A).", "For mutually exclusive events, P(A or B) = P(A) + P(B). For independent events, P(A and B) = P(A) × P(B). These rules apply under their stated conditions.", "A sample space lists all possible outcomes. Tree diagrams organise successive events: multiply probabilities along a path and add probabilities for separate successful paths.", "Without replacement, the total number of objects and probabilities change after the first selection. Do not treat dependent events as independent.", "Worked example: a fair die is rolled. P(even number) = 3/6 = 1/2 because the favourable outcomes are 2, 4 and 6."],
 "Permutation and Combination":["A permutation is an arrangement where order matters. A combination is a selection where order does not matter.","The factorial n! = n(n−1)(n−2)…1, with 0! = 1. The number of arrangements of n distinct objects is n!.","The number of ways of arranging r objects chosen from n is nPr = n!/(n−r)!. The number of ways of choosing r objects from n is nCr = n!/[r!(n−r)!].", "For repeated or identical objects, divide by the factorials of the repetition counts when arranging all objects. Check whether repetition is allowed in the question.","Worked example: choosing 2 students from 5 is 5C2 = 5!/(2!3!) = 10; arranging 2 students from 5 is 5P2 = 20.","JAMB tip: ask ‘does order matter?’ before choosing permutation or combination."],
 },
 eng:{
@@ -425,11 +243,73 @@ const vocabWords=[
 {w:"Undermine",m:"to weaken gradually",s:"erode",a:"strengthen",ex:"Careless work can undermine a good argument."},
 {w:"Vigilant",m:"watchful and alert",s:"attentive",a:"careless",ex:"Remain vigilant when checking your answers."},
 {w:"Zealous",m:"showing great enthusiasm",s:"fervent",a:"apathetic",ex:"The zealous volunteer worked hard."}
+,{w:"Abhor",m:"to hate or detest strongly",s:"loathe",a:"admire",ex:"Many people abhor dishonesty."}
+,{w:"Abridge",m:"to shorten a written work without losing its main meaning",s:"condense",a:"expand",ex:"The editor had to abridge the lengthy report."}
+,{w:"Accolade",m:"an award or expression of praise",s:"honour",a:"criticism",ex:"The scientist received an accolade for her research."}
+,{w:"Acquiesce",m:"to accept something reluctantly but without protest",s:"comply",a:"resist",ex:"He chose to acquiesce to the committee's decision."}
+,{w:"Acrimony",m:"bitterness or ill feeling in speech or behaviour",s:"resentment",a:"goodwill",ex:"The debate ended without acrimony."}
+,{w:"Admonish",m:"to warn or correct firmly",s:"reprimand",a:"praise",ex:"The teacher had to admonish the noisy class."}
+,{w:"Aesthetic",m:"concerned with beauty or artistic appearance",s:"artistic",a:"unattractive",ex:"The building has aesthetic appeal."}
+,{w:"Ameliorate",m:"to make a situation better",s:"improve",a:"deteriorate",ex:"The new policy may ameliorate the problem."}
+,{w:"Anomaly",m:"something that differs from what is normal",s:"irregularity",a:"normality",ex:"The unusual result was treated as an anomaly."}
+,{w:"Apathy",m:"lack of interest, enthusiasm or concern",s:"indifference",a:"enthusiasm",ex:"Apathy towards reading can affect vocabulary growth."}
+,{w:"Appease",m:"to calm someone by meeting demands or making concessions",s:"pacify",a:"provoke",ex:"The explanation helped appease the worried parents."}
+,{w:"Assiduous",m:"showing persistent care and effort",s:"diligent",a:"negligent",ex:"Assiduous practice improves examination skills."}
+,{w:"Austere",m:"plain, strict or without luxury",s:"severe",a:"luxurious",ex:"The room had austere furnishings."}
+,{w:"Banal",m:"boring because it is common or unoriginal",s:"trite",a:"original",ex:"The essay began with a banal statement."}
+,{w:"Cajole",m:"to persuade with gentle flattery or repeated requests",s:"coax",a:"dissuade",ex:"She tried to cajole her friend into joining the club."}
+,{w:"Capricious",m:"changing suddenly and unpredictably",s:"fickle",a:"consistent",ex:"The capricious weather delayed the match."}
+,{w:"Circumspect",m:"careful to consider possible consequences",s:"cautious",a:"reckless",ex:"Be circumspect when interpreting unfamiliar passages."}
+,{w:"Complacent",m:"too satisfied with oneself to make further effort",s:"self-satisfied",a:"concerned",ex:"A strong candidate should not become complacent."}
+,{w:"Condescending",m:"showing an insulting attitude of superiority",s:"patronising",a:"respectful",ex:"His condescending remark offended the audience."}
+,{w:"Cursory",m:"quick and not thorough",s:"superficial",a:"thorough",ex:"A cursory reading may miss the writer's main point."}
+,{w:"Dearth",m:"a lack or shortage of something",s:"scarcity",a:"abundance",ex:"There was a dearth of reliable information."}
+,{w:"Deride",m:"to mock or speak about with contempt",s:"ridicule",a:"praise",ex:"It is unkind to deride another person's effort."}
+,{w:"Didactic",m:"intended to teach or give instruction",s:"instructive",a:"uninformative",ex:"The passage has a didactic purpose."}
+,{w:"Disseminate",m:"to spread information widely",s:"circulate",a:"suppress",ex:"The agency will disseminate the safety information."}
+,{w:"Dogmatic",m:"strongly asserting opinions as if they cannot be questioned",s:"opinionated",a:"open-minded",ex:"A dogmatic speaker may ignore other evidence."}
+,{w:"Empirical",m:"based on observation or experiment",s:"experimental",a:"theoretical",ex:"The conclusion was supported by empirical evidence."}
+,{w:"Enervate",m:"to make someone feel weak or lacking energy",s:"weaken",a:"invigorate",ex:"The exhausting journey seemed to enervate the travellers."}
+,{w:"Ephemeral",m:"lasting for a very short time",s:"fleeting",a:"enduring",ex:"The excitement was ephemeral."}
+,{w:"Equivocal",m:"unclear or having more than one possible interpretation",s:"ambiguous",a:"unequivocal",ex:"The witness gave an equivocal answer."}
+,{w:"Erudite",m:"having great knowledge gained through study",s:"learned",a:"ignorant",ex:"The erudite lecturer explained the historical context."}
+,{w:"Exonerate",m:"to clear someone from blame",s:"absolve",a:"incriminate",ex:"The new evidence helped exonerate the accused person."}
+,{w:"Fastidious",m:"very attentive to accuracy and detail",s:"meticulous",a:"careless",ex:"A fastidious proofreader notices small errors."}
+,{w:"Gregarious",m:"fond of the company of others",s:"sociable",a:"reserved",ex:"The gregarious student made friends easily."}
+,{w:"Hypothetical",m:"based on a suggested situation rather than fact",s:"supposed",a:"actual",ex:"The examiner presented a hypothetical situation."}
+,{w:"Impeccable",m:"without faults or mistakes",s:"flawless",a:"defective",ex:"Her work was impeccable."}
+,{w:"Inadvertent",m:"not done deliberately",s:"accidental",a:"intentional",ex:"The error was inadvertent."}
+,{w:"Incisive",m:"clear, direct and showing sharp understanding",s:"perceptive",a:"vague",ex:"The candidate made an incisive observation."}
+,{w:"Indignant",m:"angry because something is unfair",s:"resentful",a:"pleased",ex:"The residents were indignant about the unfair decision."}
+,{w:"Lament",m:"to express sorrow or regret",s:"mourn",a:"rejoice",ex:"The writer laments the loss of traditional values."}
+,{w:"Magnanimous",m:"generous and forgiving, especially towards a rival",s:"noble",a:"petty",ex:"The magnanimous winner praised the other team."}
+,{w:"Mundane",m:"ordinary and lacking excitement",s:"routine",a:"extraordinary",ex:"The passage describes mundane daily activities."}
+,{w:"Obstinate",m:"stubbornly refusing to change one's opinion",s:"stubborn",a:"compliant",ex:"The obstinate pupil refused to listen to advice."}
+,{w:"Onerous",m:"involving a great deal of effort or difficulty",s:"burdensome",a:"easy",ex:"The onerous task required careful planning."}
+,{w:"Ostensible",m:"appearing to be true but not necessarily so",s:"apparent",a:"genuine",ex:"His ostensible reason did not explain his actions."}
+,{w:"Pernicious",m:"having a harmful effect, often gradually",s:"damaging",a:"beneficial",ex:"The report warned against pernicious rumours."}
+,{w:"Prevalent",m:"common or widespread in a particular place or time",s:"common",a:"rare",ex:"The disease was prevalent during the rainy season."}
+,{w:"Prolific",m:"producing many works or results",s:"productive",a:"unproductive",ex:"The prolific writer published several books."}
+,{w:"Reconcile",m:"to restore friendly relations or make things consistent",s:"harmonise",a:"alienate",ex:"The mediator helped reconcile the two groups."}
+,{w:"Reticent",m:"unwilling to speak freely",s:"reserved",a:"talkative",ex:"The reticent witness answered briefly."}
+,{w:"Sagacious",m:"having good judgement and wisdom",s:"wise",a:"foolish",ex:"The sagacious advice prevented a mistake."}
+,{w:"Sanguine",m:"optimistic, especially in a difficult situation",s:"hopeful",a:"pessimistic",ex:"She remained sanguine about her preparation."}
+,{w:"Sceptical",m:"having doubts or questioning whether something is true",s:"doubtful",a:"convinced",ex:"The reader was sceptical of the unsupported claim."}
+,{w:"Taciturn",m:"habitually quiet and not talkative",s:"reserved",a:"loquacious",ex:"The taciturn visitor said very little."}
+,{w:"Tangible",m:"clear enough to be seen, touched or measured",s:"concrete",a:"intangible",ex:"The project produced tangible benefits."}
+,{w:"Unprecedented",m:"never known or experienced before",s:"unparalleled",a:"ordinary",ex:"The school recorded unprecedented improvement."}
+,{w:"Veracious",m:"truthful or accurate",s:"truthful",a:"false",ex:"A veracious account matches the available facts."}
+,{w:"Verbose",m:"using more words than necessary",s:"wordy",a:"concise",ex:"A summary should not be verbose."}
+,{w:"Wary",m:"careful because of possible danger or problems",s:"cautious",a:"trusting",ex:"Be wary of options that distort the passage."}
+,{w:"Wistful",m:"showing gentle sadness or longing",s:"yearning",a:"content",ex:"The poem has a wistful tone."}
+
 ];
 let vocabIndex=-1;
-function nextWord(){vocabIndex=(vocabIndex+1)%vocabWords.length;const x=vocabWords[vocabIndex];document.getElementById('wordOfDay').innerHTML=`<b>${x.w}</b><p><b>Meaning:</b> ${x.m}</p><p><b>Synonym:</b> ${x.s} · <b>Antonym:</b> ${x.a}</p><p><b>Example:</b> ${x.ex}</p><small>Word ${vocabIndex+1} of ${vocabWords.length}</small>`;document.getElementById('vocabResult').textContent='';}
-function vocabQuiz(){const x=vocabWords[Math.floor(Math.random()*vocabWords.length)];const distractors=shuffle(vocabWords.filter(v=>v.w!==x.w)).slice(0,3).map(v=>v.m);const opts=shuffle([x.m,...distractors]);const box=document.getElementById('vocabResult');box.innerHTML=`<div class="testbox"><b>Choose the meaning of “${x.w}”.</b>${opts.map((o,i)=>`<button class="option" onclick="checkVocab(${JSON.stringify(x.w)},${i},${JSON.stringify(opts)})">${'ABCD'[i]}. ${o}</button>`).join('')}<div id="vocabFeedback"></div></div>`;window._vocabCurrent=x;}
-function checkVocab(word,index,opts){const x=window._vocabCurrent;if(!x)return;const ok=opts[index]===x.m;document.getElementById('vocabFeedback').innerHTML=`<div class="result"><b>${ok?'Correct!':'Not quite.'}</b><p>${x.w} means ${x.m}. A useful synonym is ${x.s}; its antonym is ${x.a}.</p><p><i>${x.ex}</i></p></div>`;}
+function nextWord(){vocabIndex=(vocabIndex+1)%vocabWords.length;const x=vocabWords[vocabIndex];const box=document.getElementById('wordOfDay');box.textContent='';const b=document.createElement('b');b.textContent=x.w;box.appendChild(b);[['Meaning',x.m],['Synonym',x.s],['Antonym',x.a],['Example',x.ex]].forEach(([k,v])=>{const p=document.createElement('p');p.textContent=k+': '+v;box.appendChild(p)});const small=document.createElement('small');small.textContent=`Word ${vocabIndex+1} of ${vocabWords.length}`;box.appendChild(small);document.getElementById('vocabResult').textContent='';}
+function vocabQuiz(){const x=vocabWords[Math.floor(Math.random()*vocabWords.length)];const opts=shuffle([x.m,...shuffle(vocabWords.filter(v=>v.w!==x.w)).slice(0,3).map(v=>v.m)]);const box=document.getElementById('vocabResult');box.replaceChildren();const card=document.createElement('div');card.className='testbox';const prompt=document.createElement('b');prompt.textContent=`Choose the meaning of “${x.w}”.`;card.appendChild(prompt);const feedback=document.createElement('div');opts.forEach((option,i)=>{const b=document.createElement('button');b.type='button';b.className='option';b.textContent=`${'ABCD'[i]}. ${option}`;b.addEventListener('click',()=>{card.querySelectorAll('button.option').forEach(z=>{z.disabled=true;z.classList.remove('selected')});b.classList.add('selected');const result=document.createElement('div');result.className='result';const h=document.createElement('b');h.textContent=option===x.m?'Correct!':'Not quite — remember this meaning.';result.appendChild(h);const p=document.createElement('p');p.textContent=`${x.w} means ${x.m}. Synonym: ${x.s}. Antonym: ${x.a}.`;result.appendChild(p);const ex=document.createElement('p');ex.textContent=x.ex;result.appendChild(ex);feedback.replaceChildren(result);const next=document.createElement('button');next.textContent='Try another word';next.addEventListener('click',vocabQuiz);feedback.appendChild(next)});card.appendChild(b)});card.appendChild(feedback);box.appendChild(card);}
+function checkVocab(word,index,opts){const x=vocabWords.find(v=>v.w===word);if(x&&opts&&opts[index]===x.m){document.getElementById('vocabFeedback').textContent='Correct! '+x.m;}else if(x){document.getElementById('vocabFeedback').textContent='Not quite. '+x.w+' means '+x.m+'.';}}
+function searchVocabulary(){const field=document.getElementById('vocabSearch'),target=document.getElementById('vocabSearchResults');if(!field||!target)return;const term=field.value.trim().toLowerCase();target.replaceChildren();if(!term){target.textContent='Type a word or part of its meaning to search the vocabulary list.';return;}const matches=vocabWords.filter(x=>[x.w,x.m,x.s,x.a,x.ex].some(v=>v.toLowerCase().includes(term)));if(!matches.length){target.textContent='No matching word found. Try a word, meaning, synonym or antonym.';target.className='notice';return;}target.className='';const count=document.createElement('p');count.textContent=`${matches.length} matching ${matches.length===1?'word':'words'}`;target.appendChild(count);matches.forEach(x=>{const card=document.createElement('div');card.className='testbox';const h=document.createElement('b');h.textContent=x.w;card.appendChild(h);[['Meaning',x.m],['Synonym',x.s],['Antonym',x.a],['Example',x.ex]].forEach(([k,v])=>{const p=document.createElement('p');p.textContent=k+': '+v;card.appendChild(p)});const study=document.createElement('button');study.textContent='Study this word';study.addEventListener('click',()=>{const i=vocabWords.indexOf(x);vocabIndex=i;nextWord()});card.appendChild(study);target.appendChild(card)})}
+function clearVocabularySearch(){const f=document.getElementById('vocabSearch');if(f)f.value='';const r=document.getElementById('vocabSearchResults');if(r){r.replaceChildren();r.textContent='Search by word, meaning, synonym or antonym.';r.className='muted'}if(f)f.focus();}
 
 async function askAITutor(){const q=document.getElementById('aiQuestion').value.trim(),subject=document.getElementById('aiSubject').value,status=document.getElementById('aiStatus'),reply=document.getElementById('aiReply');if(!q){status.textContent='Type a question first.';return;}status.textContent='AI is thinking…';reply.classList.remove('hide');reply.textContent='Please wait…';try{const r=await fetch('/api/tutor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject,question:q})});const data=await r.json();if(!r.ok)throw new Error(data.error||'AI service is not available.');reply.textContent=data.answer||'No answer returned.';status.textContent='Answer received.';}catch(e){reply.textContent='The AI tutor is not connected yet. Deploy the included server, set OPENAI_API_KEY on the server, and open this website through that server. Your question has not been sent anywhere.';status.textContent='Server connection required.';}}
 
