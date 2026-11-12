@@ -13,7 +13,7 @@
 <div class="stats"><div class="stat"><b id="totalCount">0</b><small>Chapters listed</small></div><div class="stat"><b id="doneCount">0</b><small>Completed</small></div><div class="stat"><b id="percent">0%</b><small>Overall progress</small></div></div>
 <h2>Your subjects</h2><div class="subject-grid" id="homeSubjects"></div><div class="panel"><b>How to use your Study Hub</b><p class="muted">Open a subject, follow its chapters in order, and mark a chapter complete after you finish studying and practising it. Your progress is saved in this browser on this device.</p></div>
 
-<div class="panel" id="vocabPanel"><div class="eyebrow">JAMB USE OF ENGLISH</div><h2 style="margin-top:8px">Vocabulary builder & search dictionary</h2><p class="muted">Practise meanings, synonyms, antonyms and words in context. You can also search by word, meaning, synonym or antonym.</p><div class="toolbar"><input id="vocabSearch" type="search" placeholder="Search vocabulary (e.g. diligent, careful, lazy)..." oninput="searchVocabulary()" aria-label="Search vocabulary" style="flex:1;min-width:220px;padding:12px;border:1px solid var(--line);border-radius:11px"><button onclick="searchVocabulary()">Search</button><button onclick="clearVocabularySearch()" style="background:#e8eef5;color:#34516c">Clear</button></div><div id="vocabSearchResults" aria-live="polite"></div><div id="wordOfDay" class="notice"></div><div class="toolbar"><button onclick="nextWord()">Show another word</button><button onclick="vocabQuiz()" style="background:#e8eef5;color:#34516c">Quick vocabulary check</button></div><div id="vocabResult" class="muted" aria-live="polite"></div></div>
+<div class="panel" id="vocabPanel"><div class="eyebrow">JAMB USE OF ENGLISH</div><h2 style="margin-top:8px">Vocabulary builder & search dictionary</h2><p class="muted">Practise meanings, synonyms, antonyms and words in context. You can also search by word, meaning, synonym or antonym.</p><div class="toolbar"><input id="vocabSearch" type="search" placeholder="Search vocabulary (e.g. diligent, careful, lazy)..." oninput="searchVocabulary()" aria-label="Search vocabulary" style="flex:1;min-width:220px;padding:12px;border:1px solid var(--line);border-radius:11px"><button id="vocabSearchButton" type="button" onclick="searchVocabulary()">Search</button><button id="vocabClearButton" type="button" onclick="clearVocabularySearch()" style="background:#e8eef5;color:#34516c">Clear</button></div><div id="vocabSearchResults" aria-live="polite"></div><div id="wordOfDay" class="notice"></div><div class="toolbar"><button onclick="nextWord()">Show another word</button><button id="vocabQuizButton" type="button" onclick="vocabQuiz()" style="background:#e8eef5;color:#34516c">Quick vocabulary check</button></div><div id="vocabResult" class="muted" aria-live="polite"></div></div>
 <div class="panel" id="pastQuestions"><div class="eyebrow">EXTRA JAMB PRACTICE</div><h2 style="margin-top:8px">Recent past questions</h2><p class="muted">Use these additional external question banks alongside the past-question resources supplied for this Study Hub. Choose the subject and year on each provider. Availability and access terms may vary.</p><div class="past-grid">
 <a class="resource" href="https://examhub.com.ng/free-jamb-cbt" target="_blank" rel="noopener"><b>ExamHub · 2020–2025</b><small>Lists English, Physics and Chemistry through 2025, and Mathematics through 2024, with CBT practice and worked answers.</small></a>
 <a class="resource" href="https://skolra.ng/jamb-past-questions" target="_blank" rel="noopener"><b>Skolra · subject and year bank</b><small>Lists recent papers across subjects, including 2025 Mathematics, Physics and Chemistry; check its year list for English.</small></a>
@@ -306,13 +306,61 @@ const vocabWords=[
 ];
 let vocabIndex=-1;
 function nextWord(){vocabIndex=(vocabIndex+1)%vocabWords.length;const x=vocabWords[vocabIndex];const box=document.getElementById('wordOfDay');box.textContent='';const b=document.createElement('b');b.textContent=x.w;box.appendChild(b);[['Meaning',x.m],['Synonym',x.s],['Antonym',x.a],['Example',x.ex]].forEach(([k,v])=>{const p=document.createElement('p');p.textContent=k+': '+v;box.appendChild(p)});const small=document.createElement('small');small.textContent=`Word ${vocabIndex+1} of ${vocabWords.length}`;box.appendChild(small);document.getElementById('vocabResult').textContent='';}
-function vocabQuiz(){const x=vocabWords[Math.floor(Math.random()*vocabWords.length)];const opts=shuffle([x.m,...shuffle(vocabWords.filter(v=>v.w!==x.w)).slice(0,3).map(v=>v.m)]);const box=document.getElementById('vocabResult');box.replaceChildren();const card=document.createElement('div');card.className='testbox';const prompt=document.createElement('b');prompt.textContent=`Choose the meaning of “${x.w}”.`;card.appendChild(prompt);const feedback=document.createElement('div');opts.forEach((option,i)=>{const b=document.createElement('button');b.type='button';b.className='option';b.textContent=`${'ABCD'[i]}. ${option}`;b.addEventListener('click',()=>{card.querySelectorAll('button.option').forEach(z=>{z.disabled=true;z.classList.remove('selected')});b.classList.add('selected');const result=document.createElement('div');result.className='result';const h=document.createElement('b');h.textContent=option===x.m?'Correct!':'Not quite — remember this meaning.';result.appendChild(h);const p=document.createElement('p');p.textContent=`${x.w} means ${x.m}. Synonym: ${x.s}. Antonym: ${x.a}.`;result.appendChild(p);const ex=document.createElement('p');ex.textContent=x.ex;result.appendChild(ex);feedback.replaceChildren(result);const next=document.createElement('button');next.textContent='Try another word';next.addEventListener('click',vocabQuiz);feedback.appendChild(next)});card.appendChild(b)});card.appendChild(feedback);box.appendChild(card);}
+function vocabQuiz(){
+ const x=vocabWords[Math.floor(Math.random()*vocabWords.length)];
+ const opts=shuffle([x.m,...shuffle(vocabWords.filter(v=>v.w!==x.w)).slice(0,3).map(v=>v.m)]);
+ const box=document.getElementById('vocabResult');
+ if(!box)return;
+ box.innerHTML='';
+ const card=document.createElement('div');card.className='testbox';
+ const prompt=document.createElement('b');prompt.textContent=`Choose the meaning of “${x.w}”.`;card.appendChild(prompt);
+ const choices=document.createElement('div');choices.setAttribute('role','group');choices.setAttribute('aria-label','Answer options');
+ let selected=-1;
+ opts.forEach((option,i)=>{
+  const b=document.createElement('button');b.type='button';b.className='option';b.textContent=`${'ABCD'[i]}. ${option}`;
+  b.addEventListener('click',()=>{selected=i;choices.querySelectorAll('button').forEach((z,k)=>{z.classList.toggle('selected',k===i);z.setAttribute('aria-pressed',k===i?'true':'false')});feedback.textContent='';});
+  b.setAttribute('aria-pressed','false');choices.appendChild(b);
+ });
+ card.appendChild(choices);
+ const check=document.createElement('button');check.type='button';check.textContent='Check answer';check.style.marginTop='10px';
+ const feedback=document.createElement('div');feedback.setAttribute('aria-live','polite');
+ check.addEventListener('click',()=>{
+  if(selected<0){feedback.className='notice';feedback.textContent='Please choose an option first.';return;}
+  const correct=opts[selected]===x.m;feedback.className='result';
+  feedback.innerHTML='';const heading=document.createElement('b');heading.textContent=correct?'Correct!':'Not quite.';feedback.appendChild(heading);
+  const detail=document.createElement('p');detail.textContent=`${x.w} means ${x.m}. Synonym: ${x.s}. Antonym: ${x.a}.`;feedback.appendChild(detail);
+  const example=document.createElement('p');example.textContent='Example: '+x.ex;feedback.appendChild(example);
+  choices.querySelectorAll('button').forEach(b=>b.disabled=true);check.disabled=true;
+  const next=document.createElement('button');next.type='button';next.textContent='Try another word';next.style.marginTop='10px';next.addEventListener('click',vocabQuiz);feedback.appendChild(next);
+ });
+ card.appendChild(check);card.appendChild(feedback);box.appendChild(card);
+}
+
 function checkVocab(word,index,opts){const x=vocabWords.find(v=>v.w===word);if(x&&opts&&opts[index]===x.m){document.getElementById('vocabFeedback').textContent='Correct! '+x.m;}else if(x){document.getElementById('vocabFeedback').textContent='Not quite. '+x.w+' means '+x.m+'.';}}
-function searchVocabulary(){const field=document.getElementById('vocabSearch'),target=document.getElementById('vocabSearchResults');if(!field||!target)return;const term=field.value.trim().toLowerCase();target.replaceChildren();if(!term){target.textContent='Type a word or part of its meaning to search the vocabulary list.';return;}const matches=vocabWords.filter(x=>[x.w,x.m,x.s,x.a,x.ex].some(v=>v.toLowerCase().includes(term)));if(!matches.length){target.textContent='No matching word found. Try a word, meaning, synonym or antonym.';target.className='notice';return;}target.className='';const count=document.createElement('p');count.textContent=`${matches.length} matching ${matches.length===1?'word':'words'}`;target.appendChild(count);matches.forEach(x=>{const card=document.createElement('div');card.className='testbox';const h=document.createElement('b');h.textContent=x.w;card.appendChild(h);[['Meaning',x.m],['Synonym',x.s],['Antonym',x.a],['Example',x.ex]].forEach(([k,v])=>{const p=document.createElement('p');p.textContent=k+': '+v;card.appendChild(p)});const study=document.createElement('button');study.textContent='Study this word';study.addEventListener('click',()=>{const i=vocabWords.indexOf(x);vocabIndex=i;nextWord()});card.appendChild(study);target.appendChild(card)})}
-function clearVocabularySearch(){const f=document.getElementById('vocabSearch');if(f)f.value='';const r=document.getElementById('vocabSearchResults');if(r){r.replaceChildren();r.textContent='Search by word, meaning, synonym or antonym.';r.className='muted'}if(f)f.focus();}
+function searchVocabulary(){
+ const field=document.getElementById('vocabSearch'),target=document.getElementById('vocabSearchResults');
+ if(!field||!target)return;
+ const term=field.value.trim().toLocaleLowerCase();target.innerHTML='';target.className='muted';
+ if(!term){target.textContent='Enter a word, meaning, synonym or antonym to search.';return;}
+ const norm=v=>(v||'').toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ const needle=norm(term);
+ const matches=vocabWords.filter(x=>[x.w,x.m,x.s,x.a,x.ex].some(v=>norm(v).includes(needle)));
+ if(!matches.length){target.className='notice';target.textContent='No matching word found. Try another spelling or search by meaning, synonym or antonym.';return;}
+ const count=document.createElement('p');count.textContent=`${matches.length} matching ${matches.length===1?'word':'words'}`;target.appendChild(count);
+ matches.forEach(x=>{
+  const card=document.createElement('div');card.className='testbox';
+  const h=document.createElement('b');h.textContent=x.w;card.appendChild(h);
+  [['Meaning',x.m],['Synonym',x.s],['Antonym',x.a],['Example',x.ex]].forEach(([label,value])=>{const p=document.createElement('p');p.textContent=label+': '+value;card.appendChild(p)});
+  const study=document.createElement('button');study.type='button';study.textContent='Study this word';study.addEventListener('click',()=>{vocabIndex=vocabWords.indexOf(x)-1;nextWord();document.getElementById('wordOfDay').scrollIntoView({behavior:'smooth',block:'center'});});card.appendChild(study);target.appendChild(card);
+ });
+}
+function clearVocabularySearch(){const f=document.getElementById('vocabSearch'),r=document.getElementById('vocabSearchResults');if(f)f.value='';if(r){r.innerHTML='';r.className='muted';r.textContent='Search by word, meaning, synonym or antonym.';}if(f)f.focus();}
+
 
 async function askAITutor(){const q=document.getElementById('aiQuestion').value.trim(),subject=document.getElementById('aiSubject').value,status=document.getElementById('aiStatus'),reply=document.getElementById('aiReply');if(!q){status.textContent='Type a question first.';return;}status.textContent='AI is thinking…';reply.classList.remove('hide');reply.textContent='Please wait…';try{const r=await fetch('/api/tutor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject,question:q})});const data=await r.json();if(!r.ok)throw new Error(data.error||'AI service is not available.');reply.textContent=data.answer||'No answer returned.';status.textContent='Answer received.';}catch(e){reply.textContent='The AI tutor is not connected yet. Deploy the included server, set OPENAI_API_KEY on the server, and open this website through that server. Your question has not been sent anywhere.';status.textContent='Server connection required.';}}
 
 if(document.getElementById("wordOfDay")) nextWord();
+// Explicit listeners keep vocabulary controls working even if inline handlers are restricted.
+(()=>{const f=document.getElementById('vocabSearch'),s=document.getElementById('vocabSearchButton'),c=document.getElementById('vocabClearButton'),q=document.getElementById('vocabQuizButton');if(f){f.addEventListener('input',searchVocabulary);f.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchVocabulary();}});}if(s)s.addEventListener('click',searchVocabulary);if(c)c.addEventListener('click',clearVocabularySearch);if(q)q.addEventListener('click',vocabQuiz);})();
 paintCards();
 </script></body></html>
